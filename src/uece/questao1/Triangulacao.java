@@ -3,6 +3,8 @@ package uece.questao1;
 public class Triangulacao {
 	
 	private static int matriz[][] = new int[6][6];
+
+	private static double matriz2[][] = new double[6][6];
 	
 	private static String verticesT = "";
 	private static Double verticesTArea = 0.0;
@@ -15,7 +17,8 @@ public class Triangulacao {
 		if(n == 3 || (b-a) < 3){
 		// tem zero diagonais e um triangulo, retorne a area do poligono
 		//System.out.println("chegou no caso base");
-		calculaAreaTriangulo(verticesX,a,b);
+			
+				matriz2[a][b] = calculaAreaTriangulo(verticesX,a,b);			
 		
 		}else if(n >= 4){
 		
@@ -24,16 +27,18 @@ public class Triangulacao {
 				for (int k = a; k < b; k++) {
 					int vDiagonal = selecionaDiagonal(verticesAux,k);
 					
-					System.out.println("triangulacao("+k+","+vDiagonal+");");
-					System.out.println("triangulacao("+vDiagonal+","+k+");");
-				
-					triangulacaoMinima(verticesAux, k, vDiagonal);
-					triangulacaoMinima(verticesAux, vDiagonal, k);
-				}		
-			
-				
-			
-				}
+					if(matriz[a][b] > 0.0){
+						System.out.println("ja tem");
+					}else{
+
+						System.out.println("triangulacao("+k+","+vDiagonal+");");
+						System.out.println("triangulacao("+vDiagonal+","+k+");");
+						
+						triangulacaoMinima(verticesAux, k, vDiagonal);
+						triangulacaoMinima(verticesAux, vDiagonal, k);
+					}
+			}			
+		}
 	}
 	public static int[] getVectorFromUntil(int vet1[], int a, int b){
 		
