@@ -2,7 +2,7 @@ package uece.questao1;
 
 public class Triangulacao {
 	
-	private static int matriz[][] = new int[5][5];
+	private static int matriz[][] = new int[6][6];
 	
 	private static String verticesT = "";
 	private static Double verticesTArea = 0.0;
@@ -21,16 +21,19 @@ public class Triangulacao {
 		
 			int verticesAux[] = getVectorFromUntil(verticesX, a, b);
 			
-			for (int k = a; k <= b; k++) {
-				int vDiagonal = selecionaDiagonal(verticesAux,k);
+				for (int k = a; k < b; k++) {
+					int vDiagonal = selecionaDiagonal(verticesAux,k);
+					
+					System.out.println("triangulacao("+k+","+vDiagonal+");");
+					System.out.println("triangulacao("+vDiagonal+","+k+");");
 				
-				System.out.println("triangulacao("+k+","+vDiagonal+");");
-				System.out.println("triangulacao("+vDiagonal+","+k+");");
+					triangulacaoMinima(verticesAux, k, vDiagonal);
+					triangulacaoMinima(verticesAux, vDiagonal, k);
+				}		
 			
-				triangulacaoMinima(verticesAux, k, vDiagonal);
-				triangulacaoMinima(verticesAux, vDiagonal, k);
-			}	
-		}
+				
+			
+				}
 	}
 	public static int[] getVectorFromUntil(int vet1[], int a, int b){
 		
@@ -109,23 +112,33 @@ public class Triangulacao {
 		matriz[1][2] = 3;
 		matriz[1][3] = 5;
 		matriz[1][4] = 4;
+		matriz[1][5] = 4;
 		
 		matriz[2][1] = 3;
 		matriz[2][2] = 0;
 		matriz[2][3] = 4;
 		matriz[2][4] = 5;
+		matriz[2][5] = 5;
 
 		matriz[3][1] = 5;
 		matriz[3][2] = 4;
 		matriz[3][3] = 0;
 		matriz[3][4] = 4;
+		matriz[3][5] = 4;
 		
 		matriz[4][1] = 4;
 		matriz[4][2] = 5;
 		matriz[4][3] = 4;
 		matriz[4][4] = 0;
+		matriz[4][5] = 4;
+		
+		matriz[5][1] = 3;
+		matriz[5][2] = 5;
+		matriz[5][3] = 4;
+		matriz[5][4] = 4;
+		matriz[5][5] = 0;
 
-		int n = 4;
+		int n = 5;
 		int vertices[] = new int[n];
 		
 		//nomeando os vertices
@@ -133,7 +146,7 @@ public class Triangulacao {
 			vertices[x] = x + 1; 
 		}
 		
-		triangulacaoMinima(vertices, 0, 3);
+		triangulacaoMinima(vertices, 0, 4);
 		
 		System.out.println("----MENOR ÁREA---- \n Vértices: "+verticesT + " \n"
 				+ " Valor Área = " +verticesTArea);
