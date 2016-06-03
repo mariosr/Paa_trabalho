@@ -18,7 +18,7 @@ public class Triangulacao {
 		// tem zero diagonais e um triangulo, retorne a area do poligono
 		//System.out.println("chegou no caso base");
 			
-				matriz2[a][b] = calculaAreaTriangulo(verticesX,a,b);			
+		matriz2[a][b] = calculaAreaTriangulo(verticesX,a,b);		
 		
 		}else if(n >= 4){
 		
@@ -26,8 +26,8 @@ public class Triangulacao {
 			
 				for (int k = a; k < b; k++) {
 					int vDiagonal = selecionaDiagonal(verticesAux,k);
-					
-					if(matriz[a][b] > 0.0){
+				
+					if(matriz2[k][vDiagonal] != 0.0){
 						System.out.println("ja tem");
 					}else{
 
