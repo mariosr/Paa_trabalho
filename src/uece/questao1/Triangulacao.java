@@ -28,7 +28,7 @@ public class Triangulacao {
 					int vDiagonal = selecionaDiagonal(verticesAux,k);
 				
 					if(matriz2[k][vDiagonal] != 0.0){
-						System.out.println("ja tem");
+						System.out.println("ja tem matriz["+k +"]["+vDiagonal+"];");
 					}else{
 
 						System.out.println("triangulacao("+k+","+vDiagonal+");");
