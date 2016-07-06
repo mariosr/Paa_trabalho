@@ -9,8 +9,11 @@ public class Main {
         Vertice[] vertices = new Vertice[N];
         Aresta[] arestas = new Aresta[nArestas];
 
-	    Grafo grafo = new Grafo();
-        grafo.ordem = 2;
+	    Grafo grafo = new Grafo(N);
+        Grasp grasp = new Grasp(grafo);
 
+        grasp.computarMaxMatching(1000);
+
+        System.out.println("OK\n");
     }
 }
