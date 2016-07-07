@@ -6,8 +6,8 @@ package br.uece.paa.maxmatching;
  * Classe que implementa a meta-heuristica GRASP para o problema 1-matching.
  */
 
-public class Grasp {
-    public Grafo grafo;
+class Grasp {
+    private final Grafo grafo;
 
     Grasp(Grafo grafo) {
         this.grafo = grafo;
@@ -73,7 +73,9 @@ public class Grasp {
      * @return A melhor das duas solucoes como um vetor de arestas
      */
     private Aresta[] atualizarSolucao(Aresta[] solucao1, Aresta[] solucao2) {
-        return null;
+        if (custoSolucao(solucao2) < custoSolucao(solucao1))
+            return solucao2;
+        return solucao1;
     }
 
 
@@ -148,7 +150,7 @@ public class Grasp {
      * @param solucao Solucao como vetor de arestas
      * @return custo total
      */
-    private static int custoSolucao(Aresta[] solucao) {
+    public static int custoSolucao(Aresta[] solucao) {
         int custo = 0;
 
         if (isNull(solucao))

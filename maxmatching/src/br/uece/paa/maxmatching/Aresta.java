@@ -2,6 +2,8 @@ package br.uece.paa.maxmatching;
 
 /**
  * Created by jeffrodrigo on 06/07/16.
+ *
+ * Representa a aresta de um grafo
  */
 public class Aresta {
     public int peso;
