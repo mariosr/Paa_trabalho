@@ -2,14 +2,22 @@ package br.uece.paa.maxmatching;
 
 /**
  * Created by jeffrodrigo on 06/07/16.
+ *
+ * Classe que implementa a meta-heuristica GRASP para o problema 1-matching.
  */
+
 public class Grasp {
-    Grafo grafo;
+    public Grafo grafo;
 
     Grasp(Grafo grafo) {
         this.grafo = grafo;
     }
 
+    /**
+     * Implementa a meta-heuristica GRASP para o problema 1-matching
+     * @param maxIteracoes Numero de iteracoes que o algoritmo executara
+     * @return A melhor solucao como um vetor de arestas
+     */
     public Aresta[] computarMaxMatching(int maxIteracoes) {
         Aresta[] melhorSolucao = null;
         Aresta[] solucao;
@@ -23,16 +31,105 @@ public class Grasp {
         return melhorSolucao;
     }
 
-    static Aresta[] construirSolucao() {
+    /**
+     * Constroi emparelhamento maximo (ou maximal?) a partir de abordagem
+     * gulosa com caracteristicas aleatorias
+     *
+     * @return Solucao gerada como vetor de arestas
+     */
+    private Aresta[] construirSolucao() {
         return null;
     }
 
-    static Aresta[] buscaLocal(Aresta[] solucao) {
+    private Aresta[] buscaLocal(Aresta[] solucao) {
+        if (isNull(solucao)){
+            return null;
+        }
+
+        Aresta[] melhorSolucao = solucao;
+        int menorCusto = custoSolucao(solucao);
+
+        for (int i = 0; i < solucao.length - 1; i++) {
+            Aresta[] permutacao = permuta1(solucao, i);
+
+            int custoPermutacao = custoSolucao(permutacao);
+            if (custoPermutacao < menorCusto) {
+                menorCusto = custoPermutacao;
+                melhorSolucao = permutacao;
+            }
+        }
+
+        return melhorSolucao;
+    }
+
+    /**
+     * Retorna a melhor de duas solucoes.
+     *
+     * @param solucao1 Solucao como vetor de arestas
+     * @param solucao2 Solucao como vetor de arestas
+     *
+     * @return A melhor das duas solucoes como um vetor de arestas
+     */
+    private Aresta[] atualizarSolucao(Aresta[] solucao1, Aresta[] solucao2) {
         return null;
     }
 
-    static Aresta[] atualizarSolucao(Aresta[] solucao1, Aresta[] solucao2) {
-        return null;
+
+    /**
+     * Permuta os vertices de duas arestas vizinhas.
+     *
+     * Une a origem de uma aresta com a origem da aresta vizinha,
+     * e une o destino de uma aresta com o destino da aresta vizinha.
+     *
+     * Ou seja,
+     *                   i  i+1               i   i+1
+     * transforma {..., ab, cd, ...} em {..., ac, bd, ...}
+     *
+     * @param solucao Solucao que tera arestas perturbadas
+     * @param i posicao da aresta cujos verticies serao permutados com os da aresta vizinha
+     * @return nova solucao gerada a partir da permutacao dos vertices duas arestas vizinhas
+     */
+    private Aresta[] permuta1(Aresta[] solucao, int i){
+        Aresta a, b;
+        a = this.grafo.vertices[solucao[i].origem.nome].arestas[solucao[i + 1].origem.nome];
+        b = this.grafo.vertices[solucao[i].destino.nome].arestas[solucao[i + 1].destino.nome];
+
+        Aresta[] permutacao = new Aresta[solucao.length];
+        for (int k = 0; k < solucao.length; k++) {
+            if (k == i)
+                permutacao[k] = a;
+            else if (k == i + 1)
+                permutacao[k] = b;
+            else
+                permutacao[k] = solucao[k];
+        }
+
+        return permutacao;
     }
 
+    /**
+     * Calcula o custo das arestas de uma solucao
+     * @param solucao Solucao como vetor de arestas
+     * @return custo total
+     */
+    private static int custoSolucao(Aresta[] solucao) {
+        int custo = 0;
+
+        if (isNull(solucao))
+            return 999999;
+
+        for (Aresta aresta : solucao) {
+            custo += aresta.peso;
+        }
+        return custo;
+    }
+
+    /**
+     * Verifica se um objeto eh null
+     * @param o Objeto
+     * @return true se o objeto eh null, false caso contrario
+     */
+    static boolean isNull(Object o) {
+        return o == null;
+    }
 }
