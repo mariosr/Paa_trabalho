@@ -50,12 +50,14 @@ public class Grasp {
         int menorCusto = custoSolucao(solucao);
 
         for (int i = 0; i < solucao.length - 1; i++) {
-            Aresta[] permutacao = permuta1(solucao, i);
+            for (int j = i+1; j < solucao.length; j++) {
+                Aresta[] permutacao = permutaIJ(solucao, i, j);
 
-            int custoPermutacao = custoSolucao(permutacao);
-            if (custoPermutacao < menorCusto) {
-                menorCusto = custoPermutacao;
-                melhorSolucao = permutacao;
+                int custoPermutacao = custoSolucao(permutacao);
+                if (custoPermutacao < menorCusto) {
+                    menorCusto = custoPermutacao;
+                    melhorSolucao = permutacao;
+                }
             }
         }
 
@@ -99,6 +101,40 @@ public class Grasp {
             if (k == i)
                 permutacao[k] = a;
             else if (k == i + 1)
+                permutacao[k] = b;
+            else
+                permutacao[k] = solucao[k];
+        }
+
+        return permutacao;
+    }
+
+    /**
+     * Permuta os vertices de duas arestas I e J.
+     *
+     * Une a origem da aresta I com a origem da aresta J,
+     * e une o destino da aresta I com o destino da aresta J.
+     *
+     * Ou seja,
+     *                   i        j                 i        j
+     * transforma {..., ab, ..., cd, ...} em {..., ac, ..., bd, ...}
+     *
+     * @param solucao Solucao que tera arestas perturbadas
+     * @param i posicao da aresta I
+     * @param j posicao da aresta J
+     * @return nova solucao gerada a partir da permutacao dos vertices das duas arestas
+     */
+    private Aresta[] permutaIJ(Aresta[] solucao, int i, int j) {
+        Aresta a, b;
+
+        a = this.grafo.vertices[solucao[i].origem.nome].arestas[solucao[j].origem.nome];
+        b = this.grafo.vertices[solucao[i].destino.nome].arestas[solucao[j].destino.nome];
+
+        Aresta[] permutacao = new Aresta[solucao.length];
+        for (int k = 0; k < solucao.length; k++) {
+            if (k == i)
+                permutacao[k] = a;
+            else if (k == j)
                 permutacao[k] = b;
             else
                 permutacao[k] = solucao[k];
