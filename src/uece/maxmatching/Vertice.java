@@ -33,4 +33,8 @@ public class Vertice {
     	return null;
     }
     
+    public Status getStatus(){
+    	return status;
+    }
+    
 }

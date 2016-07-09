@@ -23,5 +23,11 @@ public class Aresta {
         this.origem = origem;
         this.destino = destino;
     }
+    
+    public void trocaStatus(){
+    	if(status == Status.LIVRE) status = Status.SATURADO;
+    	else if(status == Status.SATURADO) status = Status.LIVRE;
+    }
+    
     public Aresta(){}
 }

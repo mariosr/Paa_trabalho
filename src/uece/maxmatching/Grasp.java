@@ -1,5 +1,8 @@
 package uece.maxmatching;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by jeffrodrigo on 06/07/16.
  *
@@ -7,205 +10,266 @@ package uece.maxmatching;
  */
 
 class Grasp {
-    private final Grafo grafo;
+	private final Grafo grafo;
+	private Vertice vertices[];
+	private RandomicoHomogeneo random;
+	private List<Aresta> caminhoAumentante = new ArrayList<Aresta>();
 
-    Grasp(Grafo grafo) {
-        this.grafo = grafo;
-    }
+	Grasp(Grafo grafo) {
+		this.grafo = grafo;
+		this.vertices = grafo.vertices;
+		this.random = new RandomicoHomogeneo(this.vertices);
+	}
 
-    /**
-     * Implementa a meta-heuristica GRASP para o problema 1-matching
-     * @param maxIteracoes Numero de iteracoes que o algoritmo executara
-     * @return A melhor solucao como um vetor de arestas
-     */
-    public Aresta[] computarMaxMatching(int maxIteracoes) {
-        Aresta[] melhorSolucao = null;
-        Aresta[] solucao;
+	/**
+	 * Implementa a meta-heuristica GRASP para o problema 1-matching
+	 * 
+	 * @param maxIteracoes
+	 *            Numero de iteracoes que o algoritmo executara
+	 * @return A melhor solucao como um vetor de arestas
+	 */
+	public Aresta[] computarMaxMatching(int maxIteracoes) {
+		Aresta[] melhorSolucao = null;
+		Aresta[] solucao;
 
-        for (int i = 0; i < maxIteracoes; i++) {
-            solucao = construirSolucao();
-            solucao = buscaLocal(solucao);
-            melhorSolucao = atualizarSolucao(solucao, melhorSolucao);
-        }
+		for (int i = 0; i < maxIteracoes; i++) {
+			solucao = construirSolucao();
+			solucao = buscaLocal(solucao);
+			melhorSolucao = atualizarSolucao(solucao, melhorSolucao);
+		}
 
-        return melhorSolucao;
-    }
+		return melhorSolucao;
+	}
 
-    /**
-     * Constroi emparelhamento maximo (ou maximal?) a partir de abordagem
-     * gulosa com caracteristicas aleatorias
-     *
-     * @return Solucao gerada como vetor de arestas
-     */
-    private Aresta[] construirSolucao() {
-    	
-    	// emparelhamento perfeito, todos os vertices est�o no grafo
-    	// enquanto existir caminho de aumento ainda nao foi achado o max matching
+	/**
+	 * Constroi emparelhamento maximo (ou maximal?) a partir de abordagem gulosa
+	 * com caracteristicas aleatorias
+	 *
+	 * @return Solucao gerada como vetor de arestas
+	 */
+	private Aresta[] construirSolucao() {
 
-    	
-    	
-    	
-        return null;
-    }
-    
-    public void acharCaminhoAumentante(){
-    	
-    	Vertice vertices[] = grafo.vertices;
-    	//Aresta[] caminhoAumentante = new Aresta[];
-    	
-    	for (int i = 0; i < vertices.length; i++) {
-			if(vertices[i].status == Status.LIVRE){
-				Aresta arestasAdjacentes[] = vertices[i].arestas;
-				for (int j = 0; j < arestasAdjacentes.length; j++) {
-					Vertice verticeDestino = arestasAdjacentes[j].destino;
-					if(verticeDestino.status == Status.SATURADO){
-						
-					}
+		// emparelhamento perfeito, todos os vertices est�o no grafo
+		// enquanto existir caminho de aumento ainda nao foi achado o max
+		// matching
+
+		int position = random.gerarNumero();
+		
+		while(position != -1){
+			List<Aresta> result = acharCaminhoAumentante(vertices[0], null);
+		}
+		
+		// ache um vertice livre randomico
+		
+		
+		return null;
+	}
+
+	public Boolean ehImpar(List<Aresta> l) {
+
+		int tamanho = l.size();
+		if (tamanho % 2 == 0)
+			return false;
+		else
+			return true;
+	}
+
+	public List<Aresta> acharCaminhoAumentante(Vertice v, Aresta a) {
+
+		if (caminhoAumentante.size() == 0 && v != null) {
+
+			for (int k = 0; k < v.arestas.length; k++) {
+				Aresta aresta = v.arestas[k];
+
+				if (aresta.getStatus() == Status.LIVRE) {
+					caminhoAumentante.add(aresta);
+				}
+			}
+		} else if (a != null) {
+			caminhoAumentante.add(a);
+		}
+
+		// ache um vertice livre e parta dele
+
+		int ultimaPosicao = caminhoAumentante.size() - 1;
+		Aresta arestasAdjacentes[] = caminhoAumentante.get(ultimaPosicao).destino.arestas;
+		Aresta aresta;
+
+		for (int i = 0; i < arestasAdjacentes.length; i++) {
+			aresta = arestasAdjacentes[i];
+
+			if (aresta.getStatus() != caminhoAumentante.get(ultimaPosicao).status) {
+				acharCaminhoAumentante(null, aresta);
+			}
+		}
+
+		if (caminhoAumentante.get(0).status == Status.LIVRE	
+				&& caminhoAumentante.get(ultimaPosicao).status == Status.LIVRE
+				&& ehImpar(caminhoAumentante)){
+			
+			inserirCaminhoAumento();
+			
+			return caminhoAumentante;
+		} else return null;
+	}
+
+	public void inserirCaminhoAumento(){
+		for (Aresta aresta : caminhoAumentante) {
+			Vertice origem = aresta.origem;
+			Vertice destino = aresta.destino;
+			
+			int x = grafo.retornaPosicaoOrigemAresta(grafo, origem);
+			int y = grafo.retornaPosicaoDestinoAresta(grafo, destino);
+			Aresta newEdge = grafo.retornaAresta(grafo, x, y);
+			newEdge.trocaStatus();
+			grafo.vertices[x].arestas[y] = newEdge;
+		}
+	}
+	
+	private Aresta[] buscaLocal(Aresta[] solucao) {
+		if (isNull(solucao)) {
+			return null;
+		}
+
+		Aresta[] melhorSolucao = solucao;
+		int menorCusto = custoSolucao(solucao);
+
+		for (int i = 0; i < solucao.length - 1; i++) {
+			for (int j = i + 1; j < solucao.length; j++) {
+				Aresta[] permutacao = permutaIJ(solucao, i, j);
+
+				int custoPermutacao = custoSolucao(permutacao);
+				if (custoPermutacao < menorCusto) {
+					menorCusto = custoPermutacao;
+					melhorSolucao = permutacao;
 				}
 			}
 		}
-    	
-    	
-    }
-   
-    private Aresta[] buscaLocal(Aresta[] solucao) {
-        if (isNull(solucao)){
-            return null;
-        }
 
-        Aresta[] melhorSolucao = solucao;
-        int menorCusto = custoSolucao(solucao);
+		return melhorSolucao;
+	}
 
-        for (int i = 0; i < solucao.length - 1; i++) {
-            for (int j = i+1; j < solucao.length; j++) {
-                Aresta[] permutacao = permutaIJ(solucao, i, j);
+	/**
+	 * Retorna a melhor de duas solucoes.
+	 *
+	 * @param solucao1
+	 *            Solucao como vetor de arestas
+	 * @param solucao2
+	 *            Solucao como vetor de arestas
+	 *
+	 * @return A melhor das duas solucoes como um vetor de arestas
+	 */
+	private Aresta[] atualizarSolucao(Aresta[] solucao1, Aresta[] solucao2) {
+		if (custoSolucao(solucao2) < custoSolucao(solucao1))
+			return solucao2;
+		return solucao1;
+	}
 
-                int custoPermutacao = custoSolucao(permutacao);
-                if (custoPermutacao < menorCusto) {
-                    menorCusto = custoPermutacao;
-                    melhorSolucao = permutacao;
-                }
-            }
-        }
+	/**
+	 * Permuta os vertices de duas arestas vizinhas.
+	 *
+	 * Une a origem de uma aresta com a origem da aresta vizinha, e une o
+	 * destino de uma aresta com o destino da aresta vizinha.
+	 *
+	 * Ou seja, i i+1 i i+1 transforma {..., ab, cd, ...} em {..., ac, bd, ...}
+	 *
+	 * @param solucao
+	 *            Solucao que tera arestas perturbadas
+	 * @param i
+	 *            posicao da aresta cujos verticies serao permutados com os da
+	 *            aresta vizinha
+	 * @return nova solucao gerada a partir da permutacao dos vertices duas
+	 *         arestas vizinhas
+	 */
+	private Aresta[] permuta1(Aresta[] solucao, int i) {
+		Aresta a, b;
 
-        return melhorSolucao;
-    }
+		a = Grafo.retornaAresta(this.grafo, solucao[i].origem.retornaIndice(),
+				solucao[i + 1].origem.retornaIndice());
 
-    /**
-     * Retorna a melhor de duas solucoes.
-     *
-     * @param solucao1 Solucao como vetor de arestas
-     * @param solucao2 Solucao como vetor de arestas
-     *
-     * @return A melhor das duas solucoes como um vetor de arestas
-     */
-    private Aresta[] atualizarSolucao(Aresta[] solucao1, Aresta[] solucao2) {
-        if (custoSolucao(solucao2) < custoSolucao(solucao1))
-            return solucao2;
-        return solucao1;
-    }
+		b = Grafo.retornaAresta(this.grafo, solucao[i].destino.retornaIndice(),
+				solucao[i + 1].destino.retornaIndice());
 
+		Aresta[] permutacao = new Aresta[solucao.length];
+		for (int k = 0; k < solucao.length; k++) {
+			if (k == i)
+				permutacao[k] = a;
+			else if (k == i + 1)
+				permutacao[k] = b;
+			else
+				permutacao[k] = solucao[k];
+		}
 
-    /**
-     * Permuta os vertices de duas arestas vizinhas.
-     *
-     * Une a origem de uma aresta com a origem da aresta vizinha,
-     * e une o destino de uma aresta com o destino da aresta vizinha.
-     *
-     * Ou seja,
-     *                   i  i+1               i   i+1
-     * transforma {..., ab, cd, ...} em {..., ac, bd, ...}
-     *
-     * @param solucao Solucao que tera arestas perturbadas
-     * @param i posicao da aresta cujos verticies serao permutados com os da aresta vizinha
-     * @return nova solucao gerada a partir da permutacao dos vertices duas arestas vizinhas
-     */
-    private Aresta[] permuta1(Aresta[] solucao, int i){
-        Aresta a, b;
+		return permutacao;
+	}
 
-        a = Grafo.retornaAresta(this.grafo,
-                solucao[i].origem.retornaIndice(),
-                solucao[i+1].origem.retornaIndice());
+	/**
+	 * Permuta os vertices de duas arestas I e J.
+	 *
+	 * Une a origem da aresta I com a origem da aresta J, e une o destino da
+	 * aresta I com o destino da aresta J.
+	 *
+	 * Ou seja, i j i j transforma {..., ab, ..., cd, ...} em {..., ac, ..., bd,
+	 * ...}
+	 *
+	 * @param solucao
+	 *            Solucao que tera arestas perturbadas
+	 * @param i
+	 *            posicao da aresta I
+	 * @param j
+	 *            posicao da aresta J
+	 * @return nova solucao gerada a partir da permutacao dos vertices das duas
+	 *         arestas
+	 */
+	private Aresta[] permutaIJ(Aresta[] solucao, int i, int j) {
+		Aresta a, b;
 
-        b = Grafo.retornaAresta(this.grafo,
-                solucao[i].destino.retornaIndice(),
-                solucao[i+1].destino.retornaIndice());
+		a = Grafo.retornaAresta(this.grafo, solucao[i].origem.retornaIndice(),
+				solucao[j].origem.retornaIndice());
 
-        Aresta[] permutacao = new Aresta[solucao.length];
-        for (int k = 0; k < solucao.length; k++) {
-            if (k == i)
-                permutacao[k] = a;
-            else if (k == i + 1)
-                permutacao[k] = b;
-            else
-                permutacao[k] = solucao[k];
-        }
+		b = Grafo.retornaAresta(this.grafo, solucao[i].destino.retornaIndice(),
+				solucao[j].destino.retornaIndice());
 
-        return permutacao;
-    }
+		Aresta[] permutacao = new Aresta[solucao.length];
+		for (int k = 0; k < solucao.length; k++) {
+			if (k == i)
+				permutacao[k] = a;
+			else if (k == j)
+				permutacao[k] = b;
+			else
+				permutacao[k] = solucao[k];
+		}
 
-    /**
-     * Permuta os vertices de duas arestas I e J.
-     *
-     * Une a origem da aresta I com a origem da aresta J,
-     * e une o destino da aresta I com o destino da aresta J.
-     *
-     * Ou seja,
-     *                   i        j                 i        j
-     * transforma {..., ab, ..., cd, ...} em {..., ac, ..., bd, ...}
-     *
-     * @param solucao Solucao que tera arestas perturbadas
-     * @param i posicao da aresta I
-     * @param j posicao da aresta J
-     * @return nova solucao gerada a partir da permutacao dos vertices das duas arestas
-     */
-    private Aresta[] permutaIJ(Aresta[] solucao, int i, int j) {
-        Aresta a, b;
+		return permutacao;
+	}
 
-        a = Grafo.retornaAresta(this.grafo,
-                solucao[i].origem.retornaIndice(),
-                solucao[j].origem.retornaIndice());
+	/**
+	 * Calcula o custo das arestas de uma solucao
+	 * 
+	 * @param solucao
+	 *            Solucao como vetor de arestas
+	 * @return custo total
+	 */
+	public static int custoSolucao(Aresta[] solucao) {
+		int custo = 0;
 
-        b = Grafo.retornaAresta(this.grafo,
-                solucao[i].destino.retornaIndice(),
-                solucao[j].destino.retornaIndice());
+		if (isNull(solucao))
+			return 999999;
 
-        Aresta[] permutacao = new Aresta[solucao.length];
-        for (int k = 0; k < solucao.length; k++) {
-            if (k == i)
-                permutacao[k] = a;
-            else if (k == j)
-                permutacao[k] = b;
-            else
-                permutacao[k] = solucao[k];
-        }
+		for (Aresta aresta : solucao) {
+			custo += aresta.peso;
+		}
+		return custo;
+	}
 
-        return permutacao;
-    }
-
-    /**
-     * Calcula o custo das arestas de uma solucao
-     * @param solucao Solucao como vetor de arestas
-     * @return custo total
-     */
-    public static int custoSolucao(Aresta[] solucao) {
-        int custo = 0;
-
-        if (isNull(solucao))
-            return 999999;
-
-        for (Aresta aresta : solucao) {
-            custo += aresta.peso;
-        }
-        return custo;
-    }
-
-    /**
-     * Verifica se um objeto eh null
-     * @param o Objeto
-     * @return true se o objeto eh null, false caso contrario
-     */
-    static boolean isNull(Object o) {
-        return o == null;
-    }
+	/**
+	 * Verifica se um objeto eh null
+	 * 
+	 * @param o
+	 *            Objeto
+	 * @return true se o objeto eh null, false caso contrario
+	 */
+	static boolean isNull(Object o) {
+		return o == null;
+	}
 }

@@ -1,5 +1,8 @@
 package uece.questao1;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Triangulacao {
 	
 	private static int matriz[][] = new int[6][6];
@@ -112,7 +115,7 @@ public class Triangulacao {
 	}
 	
 	public static void main(String args[]) {
-		
+		/*
 	    matriz[1][1] = 0;
 		matriz[1][2] = 3;
 		matriz[1][3] = 5;
@@ -155,7 +158,8 @@ public class Triangulacao {
 		
 		System.out.println("----MENOR ÁREA---- \n Vértices: "+verticesT + " \n"
 				+ " Valor Área = " +verticesTArea);
-		
+		*/
+	    
+        
 	}
-
 }

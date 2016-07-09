@@ -33,4 +33,24 @@ class Grafo {
             return grafo.vertices[destino].arestas[origem];
     }
 
+    public int retornaPosicaoOrigemAresta(Grafo grafo, Vertice origem) {
+        
+    	for (int i = 0; i < grafo.vertices.length; i++) {
+            if(grafo.vertices[i] == origem){
+            	return i;
+            }
+		}
+    	return -1;
+    }
+    
+    public int retornaPosicaoDestinoAresta(Grafo grafo, Vertice destino) {
+        
+    	for (int i = 0; i < grafo.vertices.length; i++) {
+            if(grafo.vertices[i] == destino){
+            	return i;
+            }
+		}
+    	return -1;
+    }
+    
 }
