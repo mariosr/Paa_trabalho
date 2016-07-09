@@ -16,12 +16,16 @@ class Main {
         // Montagem do grafo
         for (int i = 0; i < N - 1; i++) {
             grafo.vertices[i].nome = i;
+            /*
+             * Arestas que ligam cada vertice I a um vertice J
+             * e aresta que liga um vertice I a ele mesmo
+             */
+
             for (int j = i + 1; j < N; j++){
-                grafo.vertices[i].arestas[j] = new Aresta();
-                grafo.vertices[i].arestas[j].origem = grafo.vertices[i];
-                grafo.vertices[i].arestas[j].destino = grafo.vertices[j];
-                grafo.vertices[i].arestas[j].peso = in.nextInt();
+                grafo.vertices[i].arestas[j] = new Aresta(grafo.vertices[i], grafo.vertices[j], in.nextInt());
             }
+
+            grafo.vertices[i].arestas[i] = new Aresta(grafo.vertices[i], grafo.vertices[i], 0);
         }
 
         Grasp grasp = new Grasp(grafo);
