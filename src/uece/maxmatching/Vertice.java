@@ -1,4 +1,4 @@
-package br.uece.paa.maxmatching;
+package uece.maxmatching;
 
 /**
  * Created by jeffrodrigo on 06/07/16.

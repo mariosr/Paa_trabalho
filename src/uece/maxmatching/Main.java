@@ -1,10 +1,13 @@
-package br.uece.paa.maxmatching;
+package uece.maxmatching;
 import java.util.Scanner;
 
 class Main {
 
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
+    	
+    	System.out.println("DIGITE AS ENTRADAS DO SEU GRAFO");
+        
+    	Scanner in = new Scanner(System.in);
 
         int N = in.nextInt();
 
