@@ -5,7 +5,7 @@ class Main {
 
     public static void main(String[] args) {
     	
-    	System.out.println("DIGITE AS ENTRADAS DO SEU GRAFO");
+    	System.out.println("Digite o numero de vertices e os pesos das arestas");
         
     	Scanner in = new Scanner(System.in);
 
