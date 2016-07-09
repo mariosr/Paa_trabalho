@@ -17,4 +17,5 @@ class Grafo {
             this.vertices[i] = new Vertice(this.N);
         }
     }
+
 }
