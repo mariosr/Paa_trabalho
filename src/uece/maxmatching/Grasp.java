@@ -39,7 +39,7 @@ class Grasp {
      */
     private Aresta[] construirSolucao() {
     	
-    	// emparelhamento perfeito, todos os vertices estão no grafo
+    	// emparelhamento perfeito, todos os vertices estï¿½o no grafo
     	// enquanto existir caminho de aumento ainda nao foi achado o max matching
 
     	
@@ -100,8 +100,14 @@ class Grasp {
      */
     private Aresta[] permuta1(Aresta[] solucao, int i){
         Aresta a, b;
-        a = this.grafo.vertices[solucao[i].origem.nome].arestas[solucao[i + 1].origem.nome];
-        b = this.grafo.vertices[solucao[i].destino.nome].arestas[solucao[i + 1].destino.nome];
+
+        a = Grafo.retornaAresta(this.grafo,
+                solucao[i].origem.retornaIndice(),
+                solucao[i+1].origem.retornaIndice());
+
+        b = Grafo.retornaAresta(this.grafo,
+                solucao[i].destino.retornaIndice(),
+                solucao[i+1].destino.retornaIndice());
 
         Aresta[] permutacao = new Aresta[solucao.length];
         for (int k = 0; k < solucao.length; k++) {
@@ -134,8 +140,13 @@ class Grasp {
     private Aresta[] permutaIJ(Aresta[] solucao, int i, int j) {
         Aresta a, b;
 
-        a = this.grafo.vertices[solucao[i].origem.nome].arestas[solucao[j].origem.nome];
-        b = this.grafo.vertices[solucao[i].destino.nome].arestas[solucao[j].destino.nome];
+        a = Grafo.retornaAresta(this.grafo,
+                solucao[i].origem.retornaIndice(),
+                solucao[j].origem.retornaIndice());
+
+        b = Grafo.retornaAresta(this.grafo,
+                solucao[i].destino.retornaIndice(),
+                solucao[j].destino.retornaIndice());
 
         Aresta[] permutacao = new Aresta[solucao.length];
         for (int k = 0; k < solucao.length; k++) {

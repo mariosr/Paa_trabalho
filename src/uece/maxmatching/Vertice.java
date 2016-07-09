@@ -18,4 +18,9 @@ public class Vertice {
         this.nome = nome;
         arestas = new Aresta[nArestas];
     }
+
+    int retornaIndice() {
+        return nome;
+    }
+
 }
