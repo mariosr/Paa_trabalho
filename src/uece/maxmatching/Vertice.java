@@ -8,6 +8,7 @@ package uece.maxmatching;
 public class Vertice {
     public int nome;
     public final Aresta[] arestas;
+    public Status status = Status.LIVRE;
 
     Vertice(int N) {
         arestas = new Aresta[N];

@@ -38,6 +38,11 @@ class Grasp {
      * @return Solucao gerada como vetor de arestas
      */
     private Aresta[] construirSolucao() {
+    	
+    	// emparelhamento perfeito, todos os vertices estão no grafo
+    	// enquanto existir caminho de aumento ainda nao foi achado o max matching
+
+    	
         return null;
     }
 
