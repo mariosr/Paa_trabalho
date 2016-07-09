@@ -43,9 +43,31 @@ class Grasp {
     	// enquanto existir caminho de aumento ainda nao foi achado o max matching
 
     	
+    	
+    	
         return null;
     }
-
+    
+    public void acharCaminhoAumentante(){
+    	
+    	Vertice vertices[] = grafo.vertices;
+    	//Aresta[] caminhoAumentante = new Aresta[];
+    	
+    	for (int i = 0; i < vertices.length; i++) {
+			if(vertices[i].status == Status.LIVRE){
+				Aresta arestasAdjacentes[] = vertices[i].arestas;
+				for (int j = 0; j < arestasAdjacentes.length; j++) {
+					Vertice verticeDestino = arestasAdjacentes[j].destino;
+					if(verticeDestino.status == Status.SATURADO){
+						
+					}
+				}
+			}
+		}
+    	
+    	
+    }
+   
     private Aresta[] buscaLocal(Aresta[] solucao) {
         if (isNull(solucao)){
             return null;

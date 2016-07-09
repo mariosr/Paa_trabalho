@@ -13,4 +13,15 @@ public class Vertice {
     Vertice(int N) {
         arestas = new Aresta[N];
     }
+    
+    public Aresta getArestaSaturada(){
+    	for (int i = 0; i < arestas.length; i++) {
+			if(arestas[i].status == Status.SATURADO){
+				return arestas[i];
+			}
+		}
+    	//é um vertice livre
+    	return null;
+    }
+    
 }
