@@ -17,5 +17,11 @@ public class Aresta {
 	public void setStatus(Status status) {
 		this.status = status;
 	}
-      
+
+    public Aresta(Vertice origem, Vertice destino, int peso) {
+        this.peso = peso;
+        this.origem = origem;
+        this.destino = destino;
+    }
+    public Aresta(){}
 }

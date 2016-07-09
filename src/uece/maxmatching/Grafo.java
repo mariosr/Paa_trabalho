@@ -17,4 +17,20 @@ class Grafo {
             this.vertices[i] = new Vertice(this.N);
         }
     }
+
+    /**
+     * Retorna uma aresta, dados seus vertices de origem e destino
+     *
+     * @param grafo
+     * @param origem
+     * @param destino
+     * @return Aresta com a origem e destino passados por parametro
+     */
+    public static Aresta retornaAresta(Grafo grafo, int origem, int destino) {
+        if (origem <= destino)
+            return grafo.vertices[origem].arestas[destino];
+        else
+            return grafo.vertices[destino].arestas[origem];
+    }
+
 }

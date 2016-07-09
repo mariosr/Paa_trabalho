@@ -10,8 +10,17 @@ public class Vertice {
     public final Aresta[] arestas;
     public Status status = Status.LIVRE;
 
-    Vertice(int N) {
-        arestas = new Aresta[N];
+    Vertice(int nArestas) {
+        arestas = new Aresta[nArestas];
+    }
+
+    Vertice(int nome, int nArestas) {
+        this.nome = nome;
+        arestas = new Aresta[nArestas];
+    }
+
+    int retornaIndice() {
+        return nome;
     }
     
     public Aresta getArestaSaturada(){
