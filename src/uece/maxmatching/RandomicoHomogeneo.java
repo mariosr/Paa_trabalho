@@ -8,8 +8,16 @@ public class RandomicoHomogeneo {
 	private Vertice vertices[];
 	private ArrayList<Integer> lista = new ArrayList<Integer>();   
 	
-	public RandomicoHomogeneo(Vertice vertices[]){
-		this.vertices = vertices;
+	public RandomicoHomogeneo(Grafo grafo){
+		this.vertices = grafo.vertices;
+	}
+	
+	public Boolean ehLivre(int position){
+		
+		if(vertices[position].status == Status.LIVRE){
+			return true;
+		}else return false;
+		
 	}
 	
 	public int gerarNumero(){
@@ -17,13 +25,13 @@ public class RandomicoHomogeneo {
 		Random rand = new Random();     
           
         int numero = -1;  
-        int tamanho = vertices.length;
+        int tamanho = vertices.length - 1;
         
         while(lista.size() < tamanho){  
             numero = rand.nextInt(tamanho) + 1;  
-            if(lista.contains(numero) == false){  
-                System.out.println(numero);  
-                lista.add(numero);  
+            if(lista.contains(numero) == false && ehLivre(numero) == true){  
+                	System.out.println(numero);  
+                	lista.add(numero);
             }  
         }  
         

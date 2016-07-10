@@ -1,7 +1,7 @@
 package uece.questao1;
 
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.List;
 
 public class Triangulacao {
 	
@@ -160,6 +160,15 @@ public class Triangulacao {
 				+ " Valor Área = " +verticesTArea);
 		*/
 	    
-        
+		List<String> array = new ArrayList<String>();
+		array.add("mario0");
+		array.add("mario1");
+		array.add("mario2");
+		array.add("mario3");
+		array.add("mario4");
+		
+		System.out.println(array.get(array.size() - 1));
+		
+		
 	}
 }

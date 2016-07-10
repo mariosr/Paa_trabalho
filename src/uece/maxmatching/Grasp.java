@@ -18,7 +18,7 @@ class Grasp {
 	Grasp(Grafo grafo) {
 		this.grafo = grafo;
 		this.vertices = grafo.vertices;
-		this.random = new RandomicoHomogeneo(this.vertices);
+		this.random = new RandomicoHomogeneo(this.grafo);
 	}
 
 	/**
@@ -55,7 +55,7 @@ class Grasp {
 
 		int position = random.gerarNumero();
 		
-		while(position != -1){
+		if(position != -1){
 			List<Aresta> result = acharCaminhoAumentante(vertices[0], null);
 		}
 		
@@ -97,8 +97,8 @@ class Grasp {
 
 		for (int i = 0; i < arestasAdjacentes.length; i++) {
 			aresta = arestasAdjacentes[i];
-
-			if (aresta.getStatus() != caminhoAumentante.get(ultimaPosicao).status) {
+			
+			if (aresta != null && aresta.getStatus() != caminhoAumentante.get(ultimaPosicao).status) {
 				acharCaminhoAumentante(null, aresta);
 			}
 		}
