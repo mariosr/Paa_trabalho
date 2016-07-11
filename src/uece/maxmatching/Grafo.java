@@ -1,5 +1,7 @@
 package uece.maxmatching;
 
+import java.util.Arrays;
+
 /**
  * Created by jeffrodrigo on 06/07/16.
  *
@@ -52,5 +54,27 @@ class Grafo {
 		}
     	return -1;
     }
-    
+
+    public Aresta[] retornaArestasOdenadas(){
+        Aresta[] solucao = new Aresta[(N * (N-1)) / 2];
+
+        int totalArestas = 0;
+        for (int i = 0; i < N - 1; i++) {
+            for (int j = i + 1; j < vertices[i].arestas.length; j++, totalArestas++) {
+                solucao[totalArestas] = vertices[i].arestas[j];
+            }
+        }
+        Arrays.sort(solucao, 0, totalArestas);
+
+        return solucao;
+    }
+
+    public void desemparelhar() {
+        for (int i = 0; i < N; i++) {
+            vertices[i].status = Status.LIVRE;
+            for (int j = i; j < N; j++) {
+                vertices[i].arestas[j].status = Status.LIVRE;
+            }
+        }
+    }
 }

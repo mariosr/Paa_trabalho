@@ -14,7 +14,7 @@ class Main {
 	    Grafo grafo = new Grafo(N);
 
         // Montagem do grafo
-        for (int i = 0; i < N - 1; i++) {
+        for (int i = 0; i < N; i++) {
             grafo.vertices[i].nome = i;
             /*
              * Arestas que ligam cada vertice I a um vertice J
@@ -29,7 +29,7 @@ class Main {
         }
 
         Grasp grasp = new Grasp(grafo);
-        Aresta[] solucao = grasp.computarMaxMatching(1000);
+        Aresta[] solucao = grasp.computarMaxMatching(1);
 
         if (Grasp.isNull(solucao)) {
             System.out.println("Nenhuma solucao encontrada\n");

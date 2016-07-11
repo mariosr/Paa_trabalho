@@ -1,11 +1,13 @@
 package uece.maxmatching;
 
+import java.util.Arrays;
+
 /**
  * Created by jeffrodrigo on 06/07/16.
  *
  * Representa a aresta de um grafo
  */
-public class Aresta {
+public class Aresta implements  Comparable<Aresta>{
     public int peso;
     public Status status = Status.LIVRE;
     public Vertice origem;
@@ -30,4 +32,24 @@ public class Aresta {
     }
     
     public Aresta(){}
+
+    boolean emparelhada() {
+        return this.status == Status.SATURADO;
+    }
+    @Override
+    public int compareTo(Aresta aresta) {
+        return this.peso - aresta.peso;
+    }
+
+    public void emparelhar() {
+        this.status = Status.SATURADO;
+        this.origem.emparelhar();
+        this.destino.emparelhar();
+    }
+
+    public boolean temArestaEmparelhada() {
+        if (this.origem.emparelhado()) return true;
+        if (this.destino.emparelhado()) return true;
+        return false;
+    }
 }

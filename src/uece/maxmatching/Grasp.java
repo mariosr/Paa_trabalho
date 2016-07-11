@@ -2,6 +2,7 @@ package uece.maxmatching;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by jeffrodrigo on 06/07/16.
@@ -33,12 +34,81 @@ class Grasp {
 		Aresta[] solucao;
 
 		for (int i = 0; i < maxIteracoes; i++) {
-			solucao = construirSolucao();
+			solucao = construirSolucao2();
+
+			if (isNull(solucao))
+				continue;
+
 			solucao = buscaLocal(solucao);
 			melhorSolucao = atualizarSolucao(solucao, melhorSolucao);
+			grafo.desemparelhar();
 		}
 
 		return melhorSolucao;
+	}
+
+	private Aresta[] construirSolucao2() {
+		int arestaInicial = 0;
+		int arestaFinal = 0;
+		int emparelhamentos = 0;
+		int maxEmparelhamentos = grafo.N / 2;
+		Random gerador = new Random();
+
+		Aresta solucao[]  = grafo.retornaArestasOdenadas();
+		int numArestasRestantes = solucao.length;
+		int emparelhamentosRestantes = maxEmparelhamentos;
+
+		// Selecionar aleatoriamente aresta no range [arestaInicial, arestaFinal]
+		while (emparelhamentos < maxEmparelhamentos) {
+			int tamSubconjunto = 1 + (int)(0.30 * emparelhamentosRestantes);
+
+			arestaFinal = proximaAresta(solucao, arestaInicial, gerador.nextInt(tamSubconjunto));
+
+			solucao[arestaFinal].emparelhar();
+			emparelhamentos++;
+
+			arestaInicial++;
+			numArestasRestantes--;
+		}
+
+
+		return retornaEmparelhamentos(solucao);
+	}
+
+	private int proximaAresta(Aresta[] solucao, int arestaInicial, int maxArestasLivres) {
+		int posicao;
+		int numArestasLivres = 0;
+
+		for (posicao = arestaInicial; posicao < solucao.length; posicao++) {
+			if (!solucao[posicao].temArestaEmparelhada()) {
+				numArestasLivres++;
+			}
+
+			if (numArestasLivres >= maxArestasLivres)
+				break;
+		}
+
+		if (posicao == solucao.length)
+			return posicao - 1;
+		return posicao;
+	}
+
+	private Aresta[] retornaEmparelhamentos(Aresta[] arestas){
+		Aresta[] saida = new Aresta[grafo.N/2];
+
+		int j = 0;
+		for (int i = 0; i < arestas.length; i++) {
+			if (arestas[i].emparelhada()){
+				saida[j] = arestas[i];
+				j++;
+			}
+		}
+
+		// Quando geramos menos emparelhamentos do que o maximo
+		//if (j < 29)
+			//return null;
+
+		return saida;
 	}
 
 	/**
@@ -154,6 +224,7 @@ class Grasp {
 	}
 
 	/**
+	 * TODO otimizar
 	 * Retorna a melhor de duas solucoes.
 	 *
 	 * @param solucao1
@@ -175,7 +246,7 @@ class Grasp {
 	 * Une a origem de uma aresta com a origem da aresta vizinha, e une o
 	 * destino de uma aresta com o destino da aresta vizinha.
 	 *
-	 * Ou seja, i i+1 i i+1 transforma {..., ab, cd, ...} em {..., ac, bd, ...}
+	 * Ou seja, transforma {..., ab, cd, ...} em {..., ac, bd, ...}
 	 *
 	 * @param solucao
 	 *            Solucao que tera arestas perturbadas
@@ -213,8 +284,7 @@ class Grasp {
 	 * Une a origem da aresta I com a origem da aresta J, e une o destino da
 	 * aresta I com o destino da aresta J.
 	 *
-	 * Ou seja, i j i j transforma {..., ab, ..., cd, ...} em {..., ac, ..., bd,
-	 * ...}
+	 * Ou seja, transforma {..., ab, ..., cd, ...} em {..., ac, ..., bd, ...}
 	 *
 	 * @param solucao
 	 *            Solucao que tera arestas perturbadas
@@ -233,6 +303,12 @@ class Grasp {
 
 		b = Grafo.retornaAresta(this.grafo, solucao[i].destino.retornaIndice(),
 				solucao[j].destino.retornaIndice());
+
+		a.status = Status.SATURADO;
+		b.status = Status.SATURADO;
+
+		solucao[i].status = Status.LIVRE;
+		solucao[j].status = Status.LIVRE;
 
 		Aresta[] permutacao = new Aresta[solucao.length];
 		for (int k = 0; k < solucao.length; k++) {
@@ -266,13 +342,6 @@ class Grasp {
 		return custo;
 	}
 
-	/**
-	 * Verifica se um objeto eh null
-	 * 
-	 * @param o
-	 *            Objeto
-	 * @return true se o objeto eh null, false caso contrario
-	 */
 	static boolean isNull(Object o) {
 		return o == null;
 	}

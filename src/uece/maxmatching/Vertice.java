@@ -34,12 +34,19 @@ public class Vertice {
 				return arestas[i];
 			}
 		}
-    	//é um vertice livre
+    	//ï¿½ um vertice livre
     	return null;
     }
     
     public Status getStatus(){
     	return status;
     }
-    
+
+    public boolean emparelhado() {
+        return this.status == Status.SATURADO;
+    }
+
+    public void emparelhar() {
+        this.status = Status.SATURADO;
+    }
 }
