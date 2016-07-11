@@ -29,16 +29,16 @@ class Main {
         }
 
         Grasp grasp = new Grasp(grafo);
-        Aresta[] solucao = grasp.computarMaxMatching(1);
+        Aresta[] solucao = grasp.computarMaxMatching(1000);
 
         if (Grasp.isNull(solucao)) {
-            System.out.println("Nenhuma solucao encontrada\n");
+            System.out.println("Nenhuma solucao encontrada!!!\n");
             return;
         }
 
         System.out.println("Solucao:\n");
         for (Aresta aresta : solucao) {
-            System.out.println("" + aresta.origem.nome + 1 +
+            System.out.println(aresta.origem.nome + 1 +
                     " -> " + aresta.destino.nome + 1 + "\n");
         }
         System.out.println("Custo: " + Grasp.custoSolucao(solucao));

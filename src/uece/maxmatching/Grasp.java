@@ -62,13 +62,15 @@ class Grasp {
 		while (emparelhamentos < maxEmparelhamentos) {
 			int tamSubconjunto = 1 + (int)(0.30 * emparelhamentosRestantes);
 
-			arestaFinal = proximaAresta(solucao, arestaInicial, gerador.nextInt(tamSubconjunto));
+			int num = gerador.nextInt(tamSubconjunto);
+
+			arestaFinal = proximaAresta(solucao, arestaInicial, 1 + num);
 
 			solucao[arestaFinal].emparelhar();
 			emparelhamentos++;
 
 			arestaInicial++;
-			numArestasRestantes--;
+			emparelhamentosRestantes--;
 		}
 
 
@@ -78,6 +80,7 @@ class Grasp {
 	private int proximaAresta(Aresta[] solucao, int arestaInicial, int maxArestasLivres) {
 		int posicao;
 		int numArestasLivres = 0;
+		int arestasContabilizadas = 0;
 
 		for (posicao = arestaInicial; posicao < solucao.length; posicao++) {
 			if (!solucao[posicao].temArestaEmparelhada()) {
@@ -103,10 +106,6 @@ class Grasp {
 				j++;
 			}
 		}
-
-		// Quando geramos menos emparelhamentos do que o maximo
-		//if (j < 29)
-			//return null;
 
 		return saida;
 	}
