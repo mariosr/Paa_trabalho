@@ -23,6 +23,11 @@ public class Vertice {
         return nome;
     }
     
+    public void trocaStatus(){
+    	if(status == Status.LIVRE) status = Status.SATURADO;
+    	else if(status == Status.SATURADO) status = Status.LIVRE;
+    }
+    
     public Aresta getArestaSaturada(){
     	for (int i = 0; i < arestas.length; i++) {
 			if(arestas[i].status == Status.SATURADO){

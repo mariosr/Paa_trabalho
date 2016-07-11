@@ -123,6 +123,10 @@ class Grasp {
 			Aresta newEdge = grafo.retornaAresta(grafo, x, y);
 			newEdge.trocaStatus();
 			grafo.vertices[x].arestas[y] = newEdge;
+			
+			//modificando o status dos vertices tambem
+			aresta.origem.trocaStatus();
+			aresta.destino.trocaStatus();
 		}
 	}
 	

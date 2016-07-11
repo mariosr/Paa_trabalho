@@ -16,7 +16,9 @@ public class RandomicoHomogeneo {
 		
 		if(vertices[position].status == Status.LIVRE){
 			return true;
-		}else return false;
+		}else{
+			return false;
+		} 
 		
 	}
 	
@@ -26,15 +28,13 @@ public class RandomicoHomogeneo {
           
         int numero = -1;  
         int tamanho = vertices.length - 1;
-        
-        while(lista.size() < tamanho){  
+    
             numero = rand.nextInt(tamanho) + 1;  
             if(lista.contains(numero) == false && ehLivre(numero) == true){  
                 	System.out.println(numero);  
                 	lista.add(numero);
             }  
-        }  
-        
+           
         return numero; 
 	}
 	
