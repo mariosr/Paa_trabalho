@@ -2,7 +2,6 @@ package uece.maxmatching;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by jeffrodrigo on 06/07/16.
@@ -30,75 +29,18 @@ class Grasp {
 	 * @return A melhor solucao como um vetor de arestas
 	 */
 	public Aresta[] computarMaxMatching(int maxIteracoes) {
+		EmparelhamentoMaximo emparelhamentos = new EmparelhamentoPorOrdenacao();
 		Aresta[] melhorSolucao = null;
 		Aresta[] solucao;
 
 		for (int i = 0; i < maxIteracoes; i++) {
-			solucao = construirSolucao2();
-
-			if (isNull(solucao))
-				continue;
-
+			solucao = emparelhamentos.construir(grafo);
 			solucao = buscaLocal(solucao);
 			melhorSolucao = atualizarSolucao(solucao, melhorSolucao);
 			grafo.desemparelhar();
 		}
 
 		return melhorSolucao;
-	}
-
-	private Aresta[] construirSolucao2() {
-		int limiteInferior = 0;
-		int maxEmparelhamentos = grafo.N / 2;
-		Random gerador = new Random();
-
-		Aresta solucao[]  = grafo.retornaArestasOdenadas();
-
-		// Selecionar aleatoriamente aresta no range [arestaInicial, arestaFinal]
-		while (maxEmparelhamentos > 0) {
-			int tamSubconjunto = 1 + (int)((1 - Math.pow(0.1, limiteInferior)) * maxEmparelhamentos);
-
-			int limiteSuperior = gerador.nextInt(tamSubconjunto);
-
-			int arestaSelecionada = proximaAresta(solucao, limiteInferior, 1 + limiteSuperior);
-
-			solucao[arestaSelecionada].emparelhar();
-
-			limiteInferior++;
-			maxEmparelhamentos--;
-		}
-
-
-		return retornaEmparelhamentos(solucao);
-	}
-
-	private int proximaAresta(Aresta[] solucao, int arestaInicial, int maxArestasLivres) {
-		int posicao;
-		int numArestasLivres = 0;
-
-		for (posicao = arestaInicial; posicao < solucao.length - 1; posicao++) {
-			if (!solucao[posicao].temArestaEmparelhada())
-				numArestasLivres++;
-
-			if (numArestasLivres >= maxArestasLivres)
-				break;
-		}
-
-		return posicao;
-	}
-
-	private Aresta[] retornaEmparelhamentos(Aresta[] arestas){
-		Aresta[] saida = new Aresta[grafo.N/2];
-
-		int j = 0;
-		for (int i = 0; i < arestas.length; i++) {
-			if (arestas[i].emparelhada()){
-				saida[j] = arestas[i];
-				j++;
-			}
-		}
-
-		return saida;
 	}
 
 	/**
@@ -210,7 +152,51 @@ class Grasp {
 			}
 		}
 
+		/*
+		for (int i = 0; i < solucao.length - 1; i++) {
+			for (int j = i + 1; j < solucao.length; j++) {
+				Aresta[] permutacao = permutaIJCruzado(solucao, i, j);
+
+				int custoPermutacao = custoSolucao(permutacao);
+				if (custoPermutacao < menorCusto) {
+					menorCusto = custoPermutacao;
+					melhorSolucao = permutacao;
+				}
+			}
+		}
+		*/
+
+
 		return melhorSolucao;
+	}
+
+	private Aresta[] permutaIJCruzado(Aresta[] solucao, int i, int j) {
+		Aresta a, b;
+
+		a = Grafo.retornaAresta(this.grafo, solucao[i].origem.retornaIndice(),
+				solucao[j].destino.retornaIndice());
+
+		b = Grafo.retornaAresta(this.grafo, solucao[i].destino.retornaIndice(),
+				solucao[j].origem.retornaIndice());
+
+		/*
+		a.status = Status.SATURADO;
+		b.status = Status.SATURADO;
+
+		solucao[i].status = Status.LIVRE;
+		solucao[j].status = Status.LIVRE;
+		*/
+		Aresta[] permutacao = new Aresta[solucao.length];
+		for (int k = 0; k < solucao.length; k++) {
+			if (k == i)
+				permutacao[k] = a;
+			else if (k == j)
+				permutacao[k] = b;
+			else
+				permutacao[k] = solucao[k];
+		}
+
+		return permutacao;
 	}
 
 	/**
@@ -225,8 +211,9 @@ class Grasp {
 	 * @return A melhor das duas solucoes como um vetor de arestas
 	 */
 	private Aresta[] atualizarSolucao(Aresta[] solucao1, Aresta[] solucao2) {
-		if (custoSolucao(solucao2) < custoSolucao(solucao1))
+		if (custoSolucao(solucao2) < custoSolucao(solucao1)) {
 			return solucao2;
+		}
 		return solucao1;
 	}
 
@@ -294,11 +281,18 @@ class Grasp {
 		b = Grafo.retornaAresta(this.grafo, solucao[i].destino.retornaIndice(),
 				solucao[j].destino.retornaIndice());
 
+		/*
 		a.status = Status.SATURADO;
 		b.status = Status.SATURADO;
 
 		solucao[i].status = Status.LIVRE;
 		solucao[j].status = Status.LIVRE;
+		*/
+
+		if (a.origem.nome == a.destino.nome)
+			return null;
+		if (b.origem.nome == b.destino.nome)
+			return null;
 
 		Aresta[] permutacao = new Aresta[solucao.length];
 		for (int k = 0; k < solucao.length; k++) {

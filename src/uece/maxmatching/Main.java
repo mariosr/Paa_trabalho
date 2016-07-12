@@ -9,7 +9,7 @@ class Main {
 	    Grafo grafo = Main.lerGrafo();
 
         Grasp grasp = new Grasp(grafo);
-        Aresta[] solucao = grasp.computarMaxMatching(10000);
+        Aresta[] solucao = grasp.computarMaxMatching(100000);
 
         if (Grasp.isNull(solucao)) {
             System.out.println("Nenhuma solucao encontrada!!!\n");
@@ -20,7 +20,8 @@ class Main {
         for (Aresta aresta : solucao) {
             int origem = aresta.origem.nome + 1;
             int destino = aresta.destino.nome + 1;
-            System.out.println(origem + "->" + destino + "\n");
+            int peso = aresta.peso;
+            System.out.println(origem + "->" + destino + "(" + peso + ")\n");
         }
         System.out.println("Custo: " + Grasp.custoSolucao(solucao));
     }
