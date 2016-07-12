@@ -48,29 +48,24 @@ class Grasp {
 	}
 
 	private Aresta[] construirSolucao2() {
-		int arestaInicial = 0;
-		int arestaFinal = 0;
-		int emparelhamentos = 0;
+		int limiteInferior = 0;
 		int maxEmparelhamentos = grafo.N / 2;
 		Random gerador = new Random();
 
 		Aresta solucao[]  = grafo.retornaArestasOdenadas();
-		int numArestasRestantes = solucao.length;
-		int emparelhamentosRestantes = maxEmparelhamentos;
 
 		// Selecionar aleatoriamente aresta no range [arestaInicial, arestaFinal]
-		while (emparelhamentos < maxEmparelhamentos) {
-			int tamSubconjunto = 1 + (int)(0.30 * emparelhamentosRestantes);
+		while (maxEmparelhamentos > 0) {
+			int tamSubconjunto = 1 + (int)((1 - Math.pow(0.1, limiteInferior)) * maxEmparelhamentos);
 
-			int num = gerador.nextInt(tamSubconjunto);
+			int limiteSuperior = gerador.nextInt(tamSubconjunto);
 
-			arestaFinal = proximaAresta(solucao, arestaInicial, 1 + num);
+			int arestaSelecionada = proximaAresta(solucao, limiteInferior, 1 + limiteSuperior);
 
-			solucao[arestaFinal].emparelhar();
-			emparelhamentos++;
+			solucao[arestaSelecionada].emparelhar();
 
-			arestaInicial++;
-			emparelhamentosRestantes--;
+			limiteInferior++;
+			maxEmparelhamentos--;
 		}
 
 
@@ -80,19 +75,15 @@ class Grasp {
 	private int proximaAresta(Aresta[] solucao, int arestaInicial, int maxArestasLivres) {
 		int posicao;
 		int numArestasLivres = 0;
-		int arestasContabilizadas = 0;
 
-		for (posicao = arestaInicial; posicao < solucao.length; posicao++) {
-			if (!solucao[posicao].temArestaEmparelhada()) {
+		for (posicao = arestaInicial; posicao < solucao.length - 1; posicao++) {
+			if (!solucao[posicao].temArestaEmparelhada())
 				numArestasLivres++;
-			}
 
 			if (numArestasLivres >= maxArestasLivres)
 				break;
 		}
 
-		if (posicao == solucao.length)
-			return posicao - 1;
 		return posicao;
 	}
 

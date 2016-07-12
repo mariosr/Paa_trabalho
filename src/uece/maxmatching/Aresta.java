@@ -8,10 +8,10 @@ import java.util.Arrays;
  * Representa a aresta de um grafo
  */
 public class Aresta implements  Comparable<Aresta>{
-    public int peso;
+    public final int peso;
     public Status status = Status.LIVRE;
-    public Vertice origem;
-    public Vertice destino;
+    public final Vertice origem;
+    public final Vertice destino;
     
 	public Status getStatus() {
 		return status;
@@ -30,8 +30,6 @@ public class Aresta implements  Comparable<Aresta>{
     	if(status == Status.LIVRE) status = Status.SATURADO;
     	else if(status == Status.SATURADO) status = Status.LIVRE;
     }
-    
-    public Aresta(){}
 
     boolean emparelhada() {
         return this.status == Status.SATURADO;

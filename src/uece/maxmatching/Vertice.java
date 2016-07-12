@@ -6,13 +6,9 @@ package uece.maxmatching;
  * Representa o Vertice de um grafo
  */
 public class Vertice {
-    public int nome;
+    public final int nome;
     public final Aresta[] arestas;
     public Status status = Status.LIVRE;
-
-    Vertice(int nArestas) {
-        arestas = new Aresta[nArestas];
-    }
 
     Vertice(int nome, int nArestas) {
         this.nome = nome;
@@ -34,7 +30,7 @@ public class Vertice {
 				return arestas[i];
 			}
 		}
-    	//� um vertice livre
+    	//eh um vertice livre
     	return null;
     }
     

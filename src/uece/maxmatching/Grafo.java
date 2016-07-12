@@ -16,7 +16,7 @@ class Grafo {
         this.vertices = new Vertice[this.N];
 
         for (int i = 0; i < this.N; i++) {
-            this.vertices[i] = new Vertice(this.N);
+            this.vertices[i] = new Vertice(i, this.N);
         }
     }
 
