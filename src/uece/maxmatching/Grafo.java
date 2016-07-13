@@ -11,6 +11,8 @@ class Grafo {
     public final int N;
     public final Vertice[] vertices;
 
+    private final Aresta[] ordenadas;
+
     Grafo(int ordem){
         this.N = ordem;
         this.vertices = new Vertice[this.N];
@@ -18,6 +20,8 @@ class Grafo {
         for (int i = 0; i < this.N; i++) {
             this.vertices[i] = new Vertice(i, this.N);
         }
+
+        ordenadas = new Aresta[(N * (N-1)) / 2];
     }
 
     /**
@@ -55,18 +59,18 @@ class Grafo {
     	return -1;
     }
 
-    public Aresta[] retornaArestasOdenadas(){
-        Aresta[] solucao = new Aresta[(N * (N-1)) / 2];
-
+    public void ordenarArestas() {
         int totalArestas = 0;
         for (int i = 0; i < N - 1; i++) {
             for (int j = i + 1; j < vertices[i].arestas.length; j++, totalArestas++) {
-                solucao[totalArestas] = vertices[i].arestas[j];
+                ordenadas[totalArestas] = vertices[i].arestas[j];
             }
         }
-        Arrays.sort(solucao, 0, totalArestas);
+        Arrays.sort(ordenadas, 0, totalArestas);
+    }
 
-        return solucao;
+    public Aresta[] retornaArestasOdenadas(){
+        return ordenadas;
     }
 
     public void desemparelhar() {

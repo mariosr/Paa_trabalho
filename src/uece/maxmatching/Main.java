@@ -7,6 +7,7 @@ class Main {
     	
     	System.out.println("Digite o numero de vertices e os pesos das arestas");
 	    Grafo grafo = Main.lerGrafo();
+        grafo.ordenarArestas();
 
         Grasp grasp = new Grasp(grafo);
         Aresta[] solucao = grasp.computarMaxMatching(1000000);
