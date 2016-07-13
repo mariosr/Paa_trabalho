@@ -35,7 +35,7 @@ class Grasp {
 
 		for (int i = 0; i < maxIteracoes; i++) {
 			solucao = emparelhamentos.construir(grafo);
-			solucao = buscaLocal(solucao);
+			solucao = buscaLocal2(solucao);
 			melhorSolucao = atualizarSolucao(solucao, melhorSolucao);
 			grafo.desemparelhar();
 		}
@@ -51,7 +51,7 @@ class Grasp {
 	 */
 	private Aresta[] construirSolucao() {
 
-		// emparelhamento perfeito, todos os vertices est�o no grafo
+		// emparelhamento perfeito, todos os vertices estao no grafo
 		// enquanto existir caminho de aumento ainda nao foi achado o max
 		// matching
 
@@ -131,16 +131,26 @@ class Grasp {
 			aresta.destino.trocaStatus();
 		}
 	}
-	
+
+	private Aresta[] buscaLocal2(Aresta[] solucao) {
+		Vizinhanca vizinhanca = new Vizinhanca(grafo);
+
+		Aresta[] melhor = vizinhanca.melhorVizinhoTriplo(solucao);
+
+		return melhor;
+	}
+
 	private Aresta[] buscaLocal(Aresta[] solucao) {
 		if (isNull(solucao)) {
 			return null;
 		}
 
-		Vizinhanca vizinhanca = new Vizinhanca();
+		Vizinhanca vizinhanca = new Vizinhanca(grafo);
 
 		Aresta[] melhorSolucao = solucao;
 		int menorCusto = custoSolucao(solucao);
+
+		System.out.println("Custo construcao: " + menorCusto);
 
 		for (int i = 0; i < solucao.length - 1; i++) {
 			for (int j = i + 1; j < solucao.length; j++) {
@@ -148,11 +158,26 @@ class Grasp {
 
 				int custoPermutacao = custoSolucao(permutacao);
 				if (custoPermutacao < menorCusto) {
-
 					menorCusto = custoPermutacao;
 					melhorSolucao = permutacao;
+				}
 
-					//System.out.println("Melhora: " + menorCusto);
+				for (int p = 0; p < permutacao.length - 1; p++) {
+					for (int q = p + 1; q < permutacao.length; q++) {
+						permutacao = vizinhanca.permutaIJ(this.grafo, permutacao, p, q);
+						custoPermutacao = custoSolucao(permutacao);
+						if (custoPermutacao < menorCusto) {
+							menorCusto = custoPermutacao;
+							melhorSolucao = permutacao;
+						}
+
+						permutacao = vizinhanca.permutaIJCruzado(this.grafo, solucao, p, q);
+						custoPermutacao = custoSolucao(permutacao);
+						if (custoPermutacao < menorCusto) {
+							menorCusto = custoPermutacao;
+							melhorSolucao = permutacao;
+						}
+					}
 				}
 
 				permutacao = vizinhanca.permutaIJCruzado(this.grafo, solucao, i, j);
@@ -160,8 +185,24 @@ class Grasp {
 				if (custoPermutacao < menorCusto) {
 					menorCusto = custoPermutacao;
 					melhorSolucao = permutacao;
+				}
 
-					//System.out.println("Melhora cruzada: " + menorCusto);
+				for (int p = 0; p < permutacao.length - 1; p++) {
+					for (int q = p + 1; q < permutacao.length; q++) {
+						permutacao = vizinhanca.permutaIJ(this.grafo, permutacao, p, q);
+						custoPermutacao = custoSolucao(permutacao);
+						if (custoPermutacao < menorCusto) {
+							menorCusto = custoPermutacao;
+							melhorSolucao = permutacao;
+						}
+
+						permutacao = vizinhanca.permutaIJCruzado(this.grafo, solucao, p, q);
+						custoPermutacao = custoSolucao(permutacao);
+						if (custoPermutacao < menorCusto) {
+							menorCusto = custoPermutacao;
+							melhorSolucao = permutacao;
+						}
+					}
 				}
 			}
 		}

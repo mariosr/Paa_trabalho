@@ -17,20 +17,24 @@ class EmparelhamentoPorOrdenacao implements EmparelhamentoMaximo {
 
         Aresta solucao[]  = grafo.retornaArestasOdenadas();
 
-        int i = 0;
+        int i = 1;
         // Selecionar aleatoriamente aresta no range [0, arestaFinal]
         while (maxEmparelhamentos > 0) {
-            double alfa = 0.75;
-            //int tamSubconjunto = (int)((1 - Math.pow(alfa, i+1)) * maxEmparelhamentos);
-            //tamSubconjunto = (maxEmparelhamentos);
-            //tamSubconjunto = (int)(0.1 * nArestasLivres);
+            double alfa = 0.90;
 
-            tamSubconjunto = (int)((1 - Math.pow(alfa, i+1)) * nArestasLivres);
+            //tamSubconjunto = (int)((1 - Math.pow(alfa, i)) * nArestasLivres);
 
-            if (tamSubconjunto > 0)
+            tamSubconjunto = (int)(Math.pow(alfa, i) * nArestasLivres);
+
+            //tamSubconjunto = (int)(alfa * nArestasLivres);
+
+            if (tamSubconjunto > 0) {
                 enesimaArestaLivre = gerador.nextInt(tamSubconjunto);
-            else
+            }
+            else {
+                //System.out.println("HEY!");
                 enesimaArestaLivre = 0;
+            }
 
             int novaAresta = proximaAresta(solucao, enesimaArestaLivre + 1);
             solucao[novaAresta].emparelhar();

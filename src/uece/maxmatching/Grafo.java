@@ -39,6 +39,10 @@ class Grafo {
             return grafo.vertices[destino].arestas[origem];
     }
 
+    public static Aresta retornaAresta(Grafo grafo, Vertice origem, Vertice destino) {
+        return Grafo.retornaAresta(grafo, origem.nome, destino.nome);
+    }
+
     public int retornaPosicaoOrigemAresta(Grafo grafo, Vertice origem) {
         
     	for (int i = 0; i < grafo.vertices.length; i++) {

@@ -10,21 +10,13 @@ class Main {
         grafo.ordenarArestas();
 
         Grasp grasp = new Grasp(grafo);
-        Aresta[] solucao = grasp.computarMaxMatching(1000000);
+        Aresta[] solucao = grasp.computarMaxMatching(10000000);
 
         if (Grasp.isNull(solucao)) {
             System.out.println("Nenhuma solucao encontrada!!!\n");
             return;
         }
-
-        System.out.println("Solucao:\n");
-        for (Aresta aresta : solucao) {
-            int origem = aresta.origem.nome + 1;
-            int destino = aresta.destino.nome + 1;
-            int peso = aresta.peso;
-            System.out.println(origem + "->" + destino + "(" + peso + ")\n");
-        }
-        System.out.println("Custo: " + Grasp.custoSolucao(solucao));
+        imprimirSolucao(solucao);
     }
 
     public static Grafo lerGrafo() {
@@ -40,5 +32,16 @@ class Main {
         }
 
         return grafo;
+    }
+
+    public static void imprimirSolucao(Aresta[] solucao) {
+        System.out.println("Solucao:\n");
+        for (Aresta aresta : solucao) {
+            int origem = aresta.origem.nome + 1;
+            int destino = aresta.destino.nome + 1;
+            int peso = aresta.peso;
+            System.out.println(origem + "->" + destino + "(" + peso + ")\n");
+        }
+        System.out.println("Custo: " + Grasp.custoSolucao(solucao));
     }
 }
