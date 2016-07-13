@@ -9,7 +9,7 @@ class Main {
 	    Grafo grafo = Main.lerGrafo();
 
         Grasp grasp = new Grasp(grafo);
-        Aresta[] solucao = grasp.computarMaxMatching(10000);
+        Aresta[] solucao = grasp.computarMaxMatching(1000000);
 
         if (Grasp.isNull(solucao)) {
             System.out.println("Nenhuma solucao encontrada!!!\n");

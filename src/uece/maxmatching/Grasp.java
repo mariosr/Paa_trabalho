@@ -137,66 +137,36 @@ class Grasp {
 			return null;
 		}
 
+		Vizinhanca vizinhanca = new Vizinhanca();
+
 		Aresta[] melhorSolucao = solucao;
 		int menorCusto = custoSolucao(solucao);
 
 		for (int i = 0; i < solucao.length - 1; i++) {
 			for (int j = i + 1; j < solucao.length; j++) {
-				Aresta[] permutacao = permutaIJ(solucao, i, j);
+				Aresta[] permutacao = vizinhanca.permutaIJ(this.grafo, solucao, i, j);
 
 				int custoPermutacao = custoSolucao(permutacao);
 				if (custoPermutacao < menorCusto) {
+
 					menorCusto = custoPermutacao;
 					melhorSolucao = permutacao;
+
+					//System.out.println("Melhora: " + menorCusto);
 				}
-			}
-		}
 
-		/*
-		for (int i = 0; i < solucao.length - 1; i++) {
-			for (int j = i + 1; j < solucao.length; j++) {
-				Aresta[] permutacao = permutaIJCruzado(solucao, i, j);
-
-				int custoPermutacao = custoSolucao(permutacao);
+				permutacao = vizinhanca.permutaIJCruzado(this.grafo, solucao, i, j);
+				custoPermutacao = custoSolucao(permutacao);
 				if (custoPermutacao < menorCusto) {
 					menorCusto = custoPermutacao;
 					melhorSolucao = permutacao;
+
+					//System.out.println("Melhora cruzada: " + menorCusto);
 				}
 			}
 		}
-		*/
-
 
 		return melhorSolucao;
-	}
-
-	private Aresta[] permutaIJCruzado(Aresta[] solucao, int i, int j) {
-		Aresta a, b;
-
-		a = Grafo.retornaAresta(this.grafo, solucao[i].origem.retornaIndice(),
-				solucao[j].destino.retornaIndice());
-
-		b = Grafo.retornaAresta(this.grafo, solucao[i].destino.retornaIndice(),
-				solucao[j].origem.retornaIndice());
-
-		/*
-		a.status = Status.SATURADO;
-		b.status = Status.SATURADO;
-
-		solucao[i].status = Status.LIVRE;
-		solucao[j].status = Status.LIVRE;
-		*/
-		Aresta[] permutacao = new Aresta[solucao.length];
-		for (int k = 0; k < solucao.length; k++) {
-			if (k == i)
-				permutacao[k] = a;
-			else if (k == j)
-				permutacao[k] = b;
-			else
-				permutacao[k] = solucao[k];
-		}
-
-		return permutacao;
 	}
 
 	/**
@@ -211,100 +181,14 @@ class Grasp {
 	 * @return A melhor das duas solucoes como um vetor de arestas
 	 */
 	private Aresta[] atualizarSolucao(Aresta[] solucao1, Aresta[] solucao2) {
-		if (custoSolucao(solucao2) < custoSolucao(solucao1)) {
-			return solucao2;
+		int custo1 = custoSolucao(solucao1);
+		int custo2 = custoSolucao(solucao2);
+
+		if (custo1 < custo2) {
+			System.out.println("Custo: " + custo1);
+			return solucao1;
 		}
-		return solucao1;
-	}
-
-	/**
-	 * Permuta os vertices de duas arestas vizinhas.
-	 *
-	 * Une a origem de uma aresta com a origem da aresta vizinha, e une o
-	 * destino de uma aresta com o destino da aresta vizinha.
-	 *
-	 * Ou seja, transforma {..., ab, cd, ...} em {..., ac, bd, ...}
-	 *
-	 * @param solucao
-	 *            Solucao que tera arestas perturbadas
-	 * @param i
-	 *            posicao da aresta cujos verticies serao permutados com os da
-	 *            aresta vizinha
-	 * @return nova solucao gerada a partir da permutacao dos vertices duas
-	 *         arestas vizinhas
-	 */
-	private Aresta[] permuta1(Aresta[] solucao, int i) {
-		Aresta a, b;
-
-		a = Grafo.retornaAresta(this.grafo, solucao[i].origem.retornaIndice(),
-				solucao[i + 1].origem.retornaIndice());
-
-		b = Grafo.retornaAresta(this.grafo, solucao[i].destino.retornaIndice(),
-				solucao[i + 1].destino.retornaIndice());
-
-		Aresta[] permutacao = new Aresta[solucao.length];
-		for (int k = 0; k < solucao.length; k++) {
-			if (k == i)
-				permutacao[k] = a;
-			else if (k == i + 1)
-				permutacao[k] = b;
-			else
-				permutacao[k] = solucao[k];
-		}
-
-		return permutacao;
-	}
-
-	/**
-	 * Permuta os vertices de duas arestas I e J.
-	 *
-	 * Une a origem da aresta I com a origem da aresta J, e une o destino da
-	 * aresta I com o destino da aresta J.
-	 *
-	 * Ou seja, transforma {..., ab, ..., cd, ...} em {..., ac, ..., bd, ...}
-	 *
-	 * @param solucao
-	 *            Solucao que tera arestas perturbadas
-	 * @param i
-	 *            posicao da aresta I
-	 * @param j
-	 *            posicao da aresta J
-	 * @return nova solucao gerada a partir da permutacao dos vertices das duas
-	 *         arestas
-	 */
-	private Aresta[] permutaIJ(Aresta[] solucao, int i, int j) {
-		Aresta a, b;
-
-		a = Grafo.retornaAresta(this.grafo, solucao[i].origem.retornaIndice(),
-				solucao[j].origem.retornaIndice());
-
-		b = Grafo.retornaAresta(this.grafo, solucao[i].destino.retornaIndice(),
-				solucao[j].destino.retornaIndice());
-
-		/*
-		a.status = Status.SATURADO;
-		b.status = Status.SATURADO;
-
-		solucao[i].status = Status.LIVRE;
-		solucao[j].status = Status.LIVRE;
-		*/
-
-		if (a.origem.nome == a.destino.nome)
-			return null;
-		if (b.origem.nome == b.destino.nome)
-			return null;
-
-		Aresta[] permutacao = new Aresta[solucao.length];
-		for (int k = 0; k < solucao.length; k++) {
-			if (k == i)
-				permutacao[k] = a;
-			else if (k == j)
-				permutacao[k] = b;
-			else
-				permutacao[k] = solucao[k];
-		}
-
-		return permutacao;
+		return solucao2;
 	}
 
 	/**

@@ -8,35 +8,74 @@ import java.util.Random;
 class EmparelhamentoPorOrdenacao implements EmparelhamentoMaximo {
     @Override
     public Aresta[] construir(Grafo grafo) {
-        int limiteInferior = 0;
         int maxEmparelhamentos = grafo.N / 2;
         Random gerador = new Random();
+        int enesimaArestaLivre;
+
+        int nArestasLivres = (grafo.N * (grafo.N - 1))/2;
+        int tamSubconjunto;
 
         Aresta solucao[]  = grafo.retornaArestasOdenadas();
 
-        // Selecionar aleatoriamente aresta no range [arestaInicial, arestaFinal]
+        int i = 0;
+        // Selecionar aleatoriamente aresta no range [0, arestaFinal]
         while (maxEmparelhamentos > 0) {
-            //int tamSubconjunto = 1 + (int)((1 - Math.pow(0.1, (limiteInferior + 1))) * maxEmparelhamentos);
-            int tamSubconjunto = maxEmparelhamentos;
+            double alfa = 0.75;
+            //int tamSubconjunto = (int)((1 - Math.pow(alfa, i+1)) * maxEmparelhamentos);
+            //tamSubconjunto = (maxEmparelhamentos);
+            //tamSubconjunto = (int)(0.1 * nArestasLivres);
 
-            int limiteSuperior = gerador.nextInt(tamSubconjunto);
+            tamSubconjunto = (int)((1 - Math.pow(alfa, i+1)) * nArestasLivres);
 
-            int arestaSelecionada = proximaAresta(solucao, limiteInferior, 1 + limiteSuperior);
-            solucao[arestaSelecionada].emparelhar();
+            if (tamSubconjunto > 0)
+                enesimaArestaLivre = gerador.nextInt(tamSubconjunto);
+            else
+                enesimaArestaLivre = 0;
 
-            //limiteInferior++;
+            int novaAresta = proximaAresta(solucao, enesimaArestaLivre + 1);
+            solucao[novaAresta].emparelhar();
+
+            int reducao = 0;
+
+            for (int k = 0; k < grafo.N; k++) {
+                int p = solucao[novaAresta].origem.nome;
+                int q = solucao[novaAresta].destino.nome;
+
+                if (k == p) {
+                    continue;
+                }
+                else {
+                    if (!grafo.vertices[k].emparelhado()) {
+                        reducao++;
+                    }
+                }
+
+                if (k == q) {
+                    continue;
+                }
+                else {
+                    if (!grafo.vertices[k].emparelhado()) {
+                        reducao++;
+                    }
+                }
+
+            }
+
+            nArestasLivres -= (reducao + 1);
+
             maxEmparelhamentos--;
+            i++;
         }
 
         return retornaEmparelhamentos(solucao, grafo.N/2);
     }
 
-    private int proximaAresta(Aresta[] solucao, int arestaInicial, int maxArestasLivres) {
+    private int proximaAresta(Aresta[] solucao, int maxArestasLivres) {
         int pos;
         int numArestasLivres = 0;
         int ultimaAresta = solucao.length;
 
-        for (pos = arestaInicial; pos < ultimaAresta - 1; pos++) {
+        for (pos = 0; pos < ultimaAresta - 1; pos++) {
             if (!solucao[pos].temArestaEmparelhada())
                 numArestasLivres++;
 
