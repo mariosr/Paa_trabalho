@@ -16,14 +16,15 @@ class EmparelhamentoPorOrdenacao implements EmparelhamentoMaximo {
 
         // Selecionar aleatoriamente aresta no range [arestaInicial, arestaFinal]
         while (maxEmparelhamentos > 0) {
-            int tamSubconjunto = 1 + (int)((1 - Math.pow(0.1, (limiteInferior + 1))) * maxEmparelhamentos);
+            //int tamSubconjunto = 1 + (int)((1 - Math.pow(0.1, (limiteInferior + 1))) * maxEmparelhamentos);
+            int tamSubconjunto = maxEmparelhamentos;
 
             int limiteSuperior = gerador.nextInt(tamSubconjunto);
 
             int arestaSelecionada = proximaAresta(solucao, limiteInferior, 1 + limiteSuperior);
             solucao[arestaSelecionada].emparelhar();
 
-            limiteInferior++;
+            //limiteInferior++;
             maxEmparelhamentos--;
         }
 
