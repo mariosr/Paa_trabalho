@@ -10,7 +10,7 @@ class Main {
         grafo.ordenarArestas();
 
         Grasp grasp = new Grasp(grafo);
-        Aresta[] solucao = grasp.computarMaxMatching(10000000);
+        Aresta[] solucao = grasp.computarMaxMatching(100000);
 
         if (Grasp.isNull(solucao)) {
             System.out.println("Nenhuma solucao encontrada!!!\n");
