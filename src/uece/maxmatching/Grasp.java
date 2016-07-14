@@ -27,9 +27,14 @@ class Grasp {
 
 		for (int i = 0; i < maxIteracoes; i++) {
 			solucao = emparelhamentos.construir(grafo);
+
+			if (i == 0)
+				melhorSolucao = solucao;
+
 			solucao = buscaLocal(solucao);
 			melhorSolucao = atualizarSolucao(solucao, melhorSolucao, i);
 			grafo.desemparelhar();
+			System.out.print((i+1) + " ");
 		}
 
 		return melhorSolucao;
@@ -58,6 +63,7 @@ class Grasp {
 	}
 
 	private void imprimirNovaSolucao(Aresta[] solucao, int iteracao) {
+		System.out.println();
 		System.out.print((iteracao + 1) + " ");
 		System.out.print(Grasp.custoSolucao(solucao) + " [ ");
 
