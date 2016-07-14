@@ -15,8 +15,6 @@ public class Vizinhanca {
         Aresta[] permutacao, melhor = solucao;
         int custoPermutacao, menorCusto = Grasp.custoSolucao(solucao);
 
-        System.out.println("Custo inicial: " + menorCusto);
-
         // Permutacoes dois a dois
         for (int i = 0; i < solucao.length - 1; i++) {
             for (int j = i + 1; j < solucao.length; j++) {
@@ -36,8 +34,6 @@ public class Vizinhanca {
     public Aresta[] melhorVizinhoTriplo(Aresta[] solucao) {
         Aresta[] permutacao, melhor = solucao;
         int custoPermutacao, menorCusto = Grasp.custoSolucao(solucao);
-
-        System.out.println("Custo inicial: " + menorCusto);
 
         // Permutacoes dois a dois
         for (int i = 0; i < solucao.length - 1; i++) {

@@ -10,6 +10,9 @@ class Main {
         grafo.ordenarArestas();
 
         Grasp grasp = new Grasp(grafo);
+        java.util.Date date = new java.util.Date();
+        System.out.println("Inicio: " + date + "\n");
+
         Aresta[] solucao = grasp.computarMaxMatching(100000);
 
         if (Grasp.isNull(solucao)) {

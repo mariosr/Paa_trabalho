@@ -51,10 +51,25 @@ class Grasp {
 		int custo2 = custoSolucao(solucao2);
 
 		if (custo1 < custo2) {
-			System.out.println("Custo: " + custo1);
+			imprimirNovaSolucao(solucao1, iteracao);
 			return solucao1;
 		}
 		return solucao2;
+	}
+
+	private void imprimirNovaSolucao(Aresta[] solucao, int iteracao) {
+		System.out.print((iteracao + 1) + " ");
+		System.out.print(Grasp.custoSolucao(solucao) + " [ ");
+
+		java.util.Date date = new java.util.Date();
+
+		for (Aresta aresta : solucao) {
+			int origem = aresta.origem.nome + 1;
+			int destino = aresta.destino.nome + 1;
+			int peso = aresta.peso;
+			System.out.print(origem + "->" + destino + " ");
+		}
+		System.out.println(" ] " + date + "\n");
 	}
 
 	/**
