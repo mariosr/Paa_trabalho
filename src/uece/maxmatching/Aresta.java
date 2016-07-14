@@ -8,7 +8,7 @@ import java.util.Arrays;
  * Representa a aresta de um grafo
  */
 public class Aresta implements  Comparable<Aresta>{
-    public final int peso;
+    public final double peso;
     public Status status = Status.LIVRE;
     public final Vertice origem;
     public final Vertice destino;
@@ -20,7 +20,7 @@ public class Aresta implements  Comparable<Aresta>{
 		this.status = status;
 	}
 
-    public Aresta(Vertice origem, Vertice destino, int peso) {
+    public Aresta(Vertice origem, Vertice destino, double peso) {
         this.peso = peso;
         this.origem = origem;
         this.destino = destino;
@@ -36,7 +36,21 @@ public class Aresta implements  Comparable<Aresta>{
     }
     @Override
     public int compareTo(Aresta aresta) {
-        return this.peso - aresta.peso;
+        double a, b;
+
+
+        if (this.peso == 999999.0)
+            a = this.peso;
+        else
+            a = (this.peso*1E10);
+
+        if (aresta.peso == 999999.0)
+            b = aresta.peso;
+        else
+            b = (aresta.peso*1E10);
+
+
+        return (int)a - (int)b;
     }
 
     public void emparelhar() {

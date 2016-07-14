@@ -4,7 +4,7 @@ import java.util.Scanner;
 class Main {
 
     public static void main(String[] args) {
-    	
+        //ConversorK500.create();
     	System.out.println("Digite o numero de vertices e os pesos das arestas");
 	    Grafo grafo = Main.lerGrafo();
         grafo.ordenarArestas();
@@ -20,6 +20,7 @@ class Main {
             return;
         }
         imprimirSolucao(solucao);
+
     }
 
     public static Grafo lerGrafo() {
@@ -29,7 +30,7 @@ class Main {
 
         for (int i = 0; i < numVertices; i++) {
             for (int j = i + 1; j < numVertices; j++){
-                grafo.vertices[i].arestas[j] = new Aresta(grafo.vertices[i], grafo.vertices[j], in.nextInt());
+                grafo.vertices[i].arestas[j] = new Aresta(grafo.vertices[i], grafo.vertices[j], in.nextDouble());
             }
             grafo.vertices[i].arestas[i] = new Aresta(grafo.vertices[i], grafo.vertices[i], 0);
         }
@@ -42,7 +43,7 @@ class Main {
         for (Aresta aresta : solucao) {
             int origem = aresta.origem.nome + 1;
             int destino = aresta.destino.nome + 1;
-            int peso = aresta.peso;
+            double peso = aresta.peso;
             System.out.println(origem + "->" + destino + "(" + peso + ")\n");
         }
         System.out.println("Custo: " + Grasp.custoSolucao(solucao));

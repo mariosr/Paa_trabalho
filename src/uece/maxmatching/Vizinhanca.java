@@ -13,7 +13,7 @@ public class Vizinhanca {
 
     public Aresta[] melhorVizinhoDuplo(Aresta[] solucao) {
         Aresta[] permutacao, melhor = solucao;
-        int custoPermutacao, menorCusto = Grasp.custoSolucao(solucao);
+        double custoPermutacao, menorCusto = Grasp.custoSolucao(solucao);
 
         // Permutacoes dois a dois
         for (int i = 0; i < solucao.length - 1; i++) {
@@ -33,7 +33,7 @@ public class Vizinhanca {
 
     public Aresta[] melhorVizinhoTriplo(Aresta[] solucao) {
         Aresta[] permutacao, melhor = solucao;
-        int custoPermutacao, menorCusto = Grasp.custoSolucao(solucao);
+        double custoPermutacao, menorCusto = Grasp.custoSolucao(solucao);
 
         // Permutacoes dois a dois
         for (int i = 0; i < solucao.length - 1; i++) {
@@ -68,10 +68,10 @@ public class Vizinhanca {
 
     private Aresta[] permutacoesDuplas(Aresta[] solucao, int p, int q) {
         Aresta[] melhor = solucao;
-        int menorCusto = Grasp.custoSolucao(solucao);
+        double menorCusto = Grasp.custoSolucao(solucao);
 
         Aresta[] permutacao;
-        int custoPermutacao;
+        double custoPermutacao;
 
         permutacao = permutacaoDuplaSimples(solucao, p, q);
         custoPermutacao = Grasp.custoSolucao(permutacao);
@@ -117,7 +117,7 @@ public class Vizinhanca {
     private Aresta[] permutacoesTriplas(Aresta[] solucao, int p, int q, int r) {
         Aresta[] permutacao;
         Aresta[] melhor = solucao;
-        int custoPermutacao, menorCusto = Grasp.custoSolucao(solucao);
+        double custoPermutacao, menorCusto = Grasp.custoSolucao(solucao);
 
         Aresta A = solucao[p];
         Aresta B = solucao[q];

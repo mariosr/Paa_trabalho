@@ -27,6 +27,9 @@ class Grasp {
 
 		for (int i = 0; i < maxIteracoes; i++) {
 			solucao = emparelhamentos.construir(grafo);
+
+			if (i == 0)
+				melhorSolucao = solucao;
 			solucao = buscaLocal(solucao);
 			melhorSolucao = atualizarSolucao(solucao, melhorSolucao, i);
 			grafo.desemparelhar();
@@ -38,7 +41,7 @@ class Grasp {
 	private Aresta[] buscaLocal(Aresta[] solucao) {
 		Vizinhanca vizinhanca = new Vizinhanca(grafo);
 
-		Aresta[] melhor = vizinhanca.melhorVizinhoTriplo(solucao);
+		Aresta[] melhor = vizinhanca.melhorVizinhoDuplo(solucao);
 
 		return melhor;
 	}
@@ -47,8 +50,8 @@ class Grasp {
 	 * Retorna a melhor de duas solucoes.
 	 */
 	private Aresta[] atualizarSolucao(Aresta[] solucao1, Aresta[] solucao2, int iteracao) {
-		int custo1 = custoSolucao(solucao1);
-		int custo2 = custoSolucao(solucao2);
+		double custo1 = custoSolucao(solucao1);
+		double custo2 = custoSolucao(solucao2);
 
 		if (custo1 < custo2) {
 			imprimirNovaSolucao(solucao1, iteracao);
@@ -66,8 +69,8 @@ class Grasp {
 		for (Aresta aresta : solucao) {
 			int origem = aresta.origem.nome + 1;
 			int destino = aresta.destino.nome + 1;
-			int peso = aresta.peso;
-			System.out.print(origem + "->" + destino + " ");
+			double peso = aresta.peso;
+			System.out.print(origem + "->" + destino + " (" + peso + ") ");
 		}
 		System.out.println(" ] " + date + "\n");
 	}
@@ -75,11 +78,11 @@ class Grasp {
 	/**
 	 * Calcula o custo das arestas de uma solucao
 	 */
-	public static int custoSolucao(Aresta[] solucao) {
-		int custo = 0;
+	public static double custoSolucao(Aresta[] solucao) {
+		double custo = 0;
 
 		if (isNull(solucao))
-			return 999999;
+			return 99999999;
 
 		for (Aresta aresta : solucao) {
 			custo += aresta.peso;
