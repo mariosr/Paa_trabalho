@@ -20,13 +20,13 @@ class EmparelhamentoPorOrdenacao implements EmparelhamentoMaximo {
         int i = 1;
         // Selecionar aleatoriamente aresta no range [0, arestaFinal]
         while (maxEmparelhamentos > 0) {
-            double alfa = 0.75;
+            double alfa = 0.2;
 
-            tamSubconjunto = (int)((1 - Math.pow(alfa, i)) * nArestasLivres);
+            //tamSubconjunto = (int)((1 - Math.pow(alfa, i)) * nArestasLivres);
 
             //tamSubconjunto = (int)(Math.pow(alfa, i) * nArestasLivres);
 
-            //tamSubconjunto = (int)(alfa * nArestasLivres);
+            tamSubconjunto = (int)(alfa * nArestasLivres);
 
             if (tamSubconjunto > 0) {
                 enesimaArestaLivre = gerador.nextInt(tamSubconjunto);

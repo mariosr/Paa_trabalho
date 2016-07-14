@@ -36,21 +36,11 @@ public class Aresta implements  Comparable<Aresta>{
     }
     @Override
     public int compareTo(Aresta aresta) {
-        double a, b;
-
-
-        if (this.peso == 999999.0)
-            a = this.peso;
-        else
-            a = (this.peso*1E10);
-
-        if (aresta.peso == 999999.0)
-            b = aresta.peso;
-        else
-            b = (aresta.peso*1E10);
-
-
-        return (int)a - (int)b;
+        if (this.peso < aresta.peso)
+            return -1;
+        else if (this.peso > aresta.peso)
+            return 1;
+        return 0;
     }
 
     public void emparelhar() {

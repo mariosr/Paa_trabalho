@@ -33,6 +33,7 @@ class Grasp {
 			solucao = buscaLocal(solucao);
 			melhorSolucao = atualizarSolucao(solucao, melhorSolucao, i);
 			grafo.desemparelhar();
+			System.out.print((i+1) + " ");
 		}
 
 		return melhorSolucao;
@@ -61,6 +62,7 @@ class Grasp {
 	}
 
 	private void imprimirNovaSolucao(Aresta[] solucao, int iteracao) {
+		System.out.println();
 		System.out.print((iteracao + 1) + " ");
 		System.out.print(Grasp.custoSolucao(solucao) + " [ ");
 
@@ -82,7 +84,7 @@ class Grasp {
 		double custo = 0;
 
 		if (isNull(solucao))
-			return 99999999;
+			return 9999999999.0;
 
 		for (Aresta aresta : solucao) {
 			custo += aresta.peso;
